@@ -1,28 +1,14 @@
 package Email::Simple::Creator;
-# $Id: Creator.pm,v 1.3 2004/07/05 20:13:43 cwest Exp $
+# $Id: Creator.pm,v 1.4 2004/07/25 20:29:28 cwest Exp $
 use strict;
 
 use vars qw[$VERSION $CRLF];
-$VERSION = (qw$Revision: 1.3 $)[1];
+$VERSION = (qw$Revision: 1.4 $)[1];
 $CRLF    = "\x0a\x0d";
 
 sub _date_header {
-    require Time::Local;
-    my $time = time;
-    my ($sec, $min, $hour, $mday, $mon, $year, $wday) = (gmtime $time)[0..6];
-    my $day   = (qw[Sun Mon Tue Wed Thu Fri Sat])[$wday];
-    my $month = (qw[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec])[$mon];
-    $year += 1900;
-    
-    my $diff  =   Time::Local::timegm(localtime $time)
-                - Time::Local::timegm(gmtime    $time);
-    my $direc = $diff < 0 ? '-' : '+';
-       $diff  = abs $diff;
-    my $tz_hr = int( $diff / 3600 );
-    my $tz_mi = int( $diff / 60 - $tz_hr * 60 );
-    
-    sprintf "%s, %d %s %d %02d:%02d:%02d %s%02d%02d",
-      $day, $mday, $month, $year, $hour, $min, $sec, $direc, $tz_hr, $tz_mi;
+    require Email::Date;
+    Email::Date::format_date();
 }
 
 sub _add_to_header {
