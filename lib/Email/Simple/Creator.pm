@@ -1,22 +1,33 @@
 package Email::Simple::Creator;
-# $Id: Creator.pm,v 1.1 2004/06/17 18:44:48 cwest Exp $
+# $Id: Creator.pm,v 1.3 2004/07/05 20:13:43 cwest Exp $
 use strict;
 
 use vars qw[$VERSION $CRLF];
-$VERSION = (qw$Revision: 1.1 $)[1];
+$VERSION = (qw$Revision: 1.3 $)[1];
 $CRLF    = "\x0a\x0d";
 
 sub _date_header {
-    my ($sec, $min, $hour, $mday, $mon, $year, $wday) = (gmtime)[0..6];
+    require Time::Local;
+    my $time = time;
+    my ($sec, $min, $hour, $mday, $mon, $year, $wday) = (gmtime $time)[0..6];
     my $day   = (qw[Sun Mon Tue Wed Thu Fri Sat])[$wday];
     my $month = (qw[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec])[$mon];
     $year += 1900;
-    sprintf "%s, %d %s %d %02d:%02d:%02d -0000",
-      $day, $mday, $month, $year, $hour, $min, $sec;
+    
+    my $diff  =   Time::Local::timegm(localtime $time)
+                - Time::Local::timegm(gmtime    $time);
+    my $direc = $diff < 0 ? '-' : '+';
+       $diff  = abs $diff;
+    my $tz_hr = int( $diff / 3600 );
+    my $tz_mi = int( $diff / 60 - $tz_hr * 60 );
+    
+    sprintf "%s, %d %s %d %02d:%02d:%02d %s%02d%02d",
+      $day, $mday, $month, $year, $hour, $min, $sec, $direc, $tz_hr, $tz_mi;
 }
 
 sub _add_to_header {
     my ($class, $header, $key, $value) = @_;
+    return unless $value;
     ${$header} .= join(": ", $key, $value) . $CRLF;
 }
 
@@ -44,8 +55,9 @@ sub create {
       Date => $CREATOR->_date_header
     ) unless $headers{Date};
 
-    my $CRLF = do { no strict 'refs'; ${"$CREATOR\::CRLF"} };
-    $class->new("$header$CRLF$body$CRLF");
+    my $email = $class->new($header);
+    $email->body_set($body . $email->{mycrlf});
+    return $email;
 }
 
 1;
