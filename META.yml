@@ -1,13 +1,16 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Email-Simple-Creator
-version:      1.41
-version_from: lib/Email/Simple/Creator.pm
-installdirs:  site
-requires:
+--- #YAML:1.0
+name:                Email-Simple-Creator
+version:             1.420
+abstract:            Email::Simple constructor for starting anew.
+license:             perl
+generated_by:        ExtUtils::MakeMaker version 6.32
+distribution_type:   module
+requires:     
     Email::Date:                   
     Email::Simple:                 
     Test::More:                    0.47
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.30
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
+author:
+    - Casey West <casey@geeknest.com>
