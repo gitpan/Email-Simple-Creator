@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Email-Simple-Creator
-version:             1.420
+version:             1.422
 abstract:            Email::Simple constructor for starting anew.
 license:             perl
 generated_by:        ExtUtils::MakeMaker version 6.32
