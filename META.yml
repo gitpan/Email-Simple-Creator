@@ -1,16 +1,16 @@
 --- #YAML:1.0
 name:                Email-Simple-Creator
-version:             1.422
+version:             1.423
 abstract:            Email::Simple constructor for starting anew.
 license:             perl
-generated_by:        ExtUtils::MakeMaker version 6.32
+generated_by:        ExtUtils::MakeMaker version 6.36_01
 distribution_type:   module
 requires:     
     Email::Date:                   
-    Email::Simple:                 
+    Email::Simple:                 2.003
     Test::More:                    0.47
 meta-spec:
     url:     http://module-build.sourceforge.net/META-spec-v1.2.html
     version: 1.2
 author:
-    - Casey West <casey@geeknest.com>
+    - Ricardo SIGNES <rjbs@cpan.org>
